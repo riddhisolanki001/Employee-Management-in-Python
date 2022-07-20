@@ -77,16 +77,15 @@ def login():
 
         if count == 1:
             session['username'] = email
-            flash("Login successfully")
-
+            flash('You Login Successfully','success')
             return redirect('/users')
         elif count1 == 1:
             password_rs = result1[3]
             sucess = check_password_hash(password_rs, password)
             if sucess:
-               
-                
+                session['username']=email
                 session['uid'] = result1[0]
+                flash("login success")
                 return redirect("/user_deshboard")
             else:
                 error = "Invalid credentials"
@@ -122,6 +121,7 @@ def user_deshboard():
         cur.execute(
             f"SELECT * FROM user_login,user_profile where user_login.id = '{user_id}' and user_profile.user_id='{user_id}'")
         userdetails = cur.fetchone()
+        
         return render_template('user_deshboard.html', value=userdetails)
     else:
         return redirect('login')
@@ -129,36 +129,43 @@ def user_deshboard():
 
 @app.route('/') 
 def index():
-    
-    if 'username' in session:
-        return redirect(url_for('users'))
-    elif 'uid' in session:
+    if 'uid' in session:
         return redirect(url_for('user_deshboard'))
+    elif 'username' in session:
+        return redirect(url_for('users'))
     else:
         return redirect(url_for('login'))
 
-
 @app.route('/insert', methods=['GET', 'POST'])
 def insert():
-    if request.method == 'POST':
-        userDetails = request.form
-        email = userDetails['email']
-        user_name = userDetails['user_name']
-        password = userDetails['password']
-        hash_pwd = generate_password_hash(password)
-        cur = mysql.connection.cursor()
-        mysql.connection.commit()
-        cur.execute(
-            f"""INSERT INTO user_login (email,user_name,password) VALUES('{email}','{user_name}','{hash_pwd}')""")
-        cur.execute("SELECT max(id) FROM user_login")
-        new_id = cur.fetchone()
+    userDetails = request.form
+    email = userDetails['email']
+    user_name = userDetails['user_name']
+    password = userDetails['password']
+    hash_pwd = generate_password_hash(password)
+    cur = mysql.connection.cursor()
+    cur.execute(f"SELECT * FROM user_login where user_name = '{user_name}'")
+    cur.execute(f"SELECT * FROM user_login where email = '{email}'")
+    chkuname = cur.fetchone()
+    chkemail=cur.fetchone()
+    if chkuname:
+        flash('already exists','error')
+        return redirect(url_for("users"))
+    if chkemail:
+        flash('already exists','error')
+        return redirect(url_for("users"))
+    cur.execute(
+    f"""INSERT INTO user_login (email,user_name,password) VALUES('{email}','{user_name}','{hash_pwd}')""")
+    cur.execute("SELECT max(id) FROM user_login")
+    new_id = cur.fetchone()
 
-        cur.execute(
-            f"""INSERT INTO user_profile (user_id)VALUES('{new_id[0]}')""")
-        mysql.connection.commit()
-        cur.close()
-
-        return redirect('/users')
+    cur.execute(
+    f"""INSERT INTO user_profile (user_id)VALUES('{new_id[0]}')""")
+    mysql.connection.commit()
+    cur.close()
+    return redirect("/users")
+    
+    
 
 
 @app.route('/edit', methods=['GET', 'POST'])
@@ -186,7 +193,7 @@ def edit():
 
 @app.route("/edit-profile/<int:user_id>")
 def edit_user(user_id):
-    if session['uid']:
+   
 
         cur = mysql.connection.cursor()
         cur.execute(
@@ -194,8 +201,7 @@ def edit_user(user_id):
         value = cur.fetchone()
         cur.close()
         return render_template("useredit.html", value=value)
-    else:
-        return redirect(url_for('user_deshboard'))
+   
 
 
 @app.route('/edituser', methods=['GET', 'POST'])
@@ -231,11 +237,11 @@ def edituser():
                     f"SELECT * FROM user_login,user_profile where user_login.id = '{user_id}' and user_profile.user_id = '{user_id}'")
                 values = cur.fetchone()
 
-                sql_update_query = f"""Update user_profile 
-                               set first_name='{first_name}', last_name='{last_name}', date_of_birth='{date_of_birth}',
+                cur.execute( f"""Update user_profile 
+                                   set first_name='{first_name}', last_name='{last_name}', date_of_birth='{date_of_birth}',
                                    mobile_no='{mobile_no}', gender='{editgender}', address='{address}', city='{city}',
                                    state='{state}', zipcode='{zipcode}',image='{filename}',pdf='{pname}', profile_updated_date='{date_update}' where user_id='{user_id}'"""
-                cur.execute(sql_update_query)
+                )
         # cur.execute(f"UPDATE user_profile SET first_name='"+first_name+"',last_name=+'"+last_name+"', date_of_birth='"+date_of_birth+"',mobile_no='"+mobile_no+"',gender='"+editgender+"', city='"+city+"',address='{address}',profile_updated_date='{date_update}',state='"+state+"',zipcode='"+zipcode+"' WHERE user_id='"+user_id+"'")
                 mysql.connection.commit()
                 cur.close()
@@ -258,13 +264,13 @@ def delete(user_id):
 @app.route('/adminlogout')
 def adminlogout():
     session['username'] = False 
-    return render_template("index.html")
+    return redirect(url_for('login'))
 
 
 @app.route('/userlogout')
 def userlogout():
     session['uid'] = False
-    return render_template("index.html")
+    return redirect(url_for('login'))
 
 
 @app.route("/cpassword", methods=['GET', 'POST'])
@@ -290,38 +296,6 @@ def insertvalidate():
         email = request.get_json()['email']
     return
 
-    # cur = mysql.connection.cursor()
-    # cur.execute("SELECT * FROM user_login where id = id")
-    # values = cur.fetchone()
-    # return render_template("conpassword.html", values=values)
-
-
-# @app.route("/update-password/<email>", methods=["GET", "POST"])
-# def updatepassword(email):
-#         password = request.form.get("password")
-#         cpassword = request.form.get("cpassword")
-#         id = request.form.get("id")
-#         if request.method == "POST":
-
-#             if password == cpassword:
-#                 confirmpassword()
-#             else:
-#                 error = "Password and Confirm password doesn't match..."
-#                 cur = mysql.connection.cursor()
-#                 cur.execute("SELECT * FROM user_login WHERE user_login.id = user_profile.user_id ORDER BY user_login.id DESC")
-#                 values = cur.fetchone()
-#                 return render_template("conpassword.html", values=values, error=error)
-
-#         return redirect(url_for('users'))
-
-# def confirmpassword():
-#     cur = mysql.connection.cursor()
-#     id = request.form.get("id")
-#     password = request.form.get("password")
-#     cur.execute(f"UPDATE user_login SET password='{password}' WHERE id ='{id}'")
-#     mysql.connection.commit()
-#     cur.close()
-#     return redirect(url_for('users'))
 
 
 if __name__ == "_main_":
