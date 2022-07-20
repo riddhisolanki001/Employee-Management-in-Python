@@ -8,106 +8,137 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="header_fixed">
-                     {% for message in get_flashed_messages() %}
-                   <div class="alert alert-warning alert-dismissible fade show mt-5" role="alert">
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                     {% endfor %}
+                    {% for message in get_flashed_messages() %}
+
+                    <!-- {{ message }} -->
+                    <script type="text/javascript">
+                        swal({
+
+                            text: "{{ message }}",
+                            icon: "{{ category }}",
+                        });
+                    </script>
+
+
+                    {% endfor %}
+
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                    <ul class=flashes>
+                        {% for category, message in messages %}
+                        <script type="text/javascript">
+                            swal({
+
+                                text: "{{ message }}",
+                                icon: "{{ category }}",
+                            });
+                        </script>
+
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% endwith %}
+
+
+
                     <div class="table-responsive" id="no-more-tables">
-                    <table id="empTable" class="table mt-5  table-responsive table-light  table-striped">
-                        <div class="row">
-                            <div class="col">
-                              <h3 class=" header mt-5 ">Manage <b class="mt-5">Users</b> <button type="button"
-                                class="btn btn-success ml-5  " data-bs-toggle="modal" data-bs-target="#exampleModal">Add
-                                New User</button></h3>
+                        <table id="empTable" class="table mt-5  table-responsive table-light  table-striped">
+                            <div class="row">
+                                <div class="col">
+                                    <h3 class=" header mt-5 "></i>Manage <b class="mt-5">Users</b> <button type="button"
+                                            class="btn btn-success ml-5  " data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal">Add
+                                            New User</button> </h3>
+                                </div>
                             </div>
-                            
-                        </div>
-                        <thead >
+                            <thead>
+                                <tr>
+
+                                    <th>User_Name</th>
+                                    <th>Full name</th>
+                                    <th>DOB</th>
+                                    <th>Mobile_no.</th>
+                                    <th>Gender</th>
+                                    <th>City</th>
+                                    <th>State</th>
+                                    <th>Zipcode</th>
+                                    <th>Email</th>
+                                    <th>Actions</th>
+                                    {% for row in result %}
+                                </tr>
+                            </thead>
+
+
+
+
                             <tr>
-                            <th>User_Name</th>
-                            <th>Full name</th>
-                            <th>DOB</th>
-                            <th>Mobile_no.</th>
-                            <th>Gender</th>
-                            <th>City</th>
-                            <th>State</th>
-                            <th>Zipcode</th>
-                            <th>Email</th>
-                            <th>Actions</th>
-                            {% for row in result %}
-                        </tr>
-                        </thead>
-                    
-                  
-                
-                      
-                        <tr>
-                            <td data-title="user_name">{{row[16]}}</td>
-                            <td data-title="full_name">{{row[2] or '' }} {{ row[3] or '' }}</td>
-                            <td data-title="dob">{{row[4] or ''}}</td>
-                            <td data-title="mobile_no">{{row[5] or ''}}</td>
-                            <td data-title="gender">{{row[6] or ''}}</td>
-                            <td data-title="city">{{row[7] or ''}}</td>
-                            <td data-title="state">{{row[9] or ''}}</td>
-                            <td data-title="zipcode">{{row[10] or ''}}</td>
-                            <td data-title="email">{{row[15] or ''}}</td>
-                            <td data-title="action"><a href="/update/{{row.1}}" class="btn btn-dark" data-bs-toggle="modal"
-                                    data-bs-target="#modaledit{{row.1}}">Edit</a>
 
-                                <a href="{{url_for('delete', user_id= row[1] )}}" class="btndelete">
-                                    <i class="fas fa-trash p-1" style="color: rgb(243, 16, 65);"></i> </a>
+                                <td data-title="user_name">{{row[16]}}</td>
+                                <td data-title="full_name">{{row[2] or '' }} {{ row[3] or '' }}</td>
+                                <td data-title="dob">{{row[4] or ''}}</td>
+                                <td data-title="mobile_no">{{row[5] or ''}}</td>
+                                <td data-title="gender">{{row[6] or ''}}</td>
+                                <td data-title="city">{{row[7] or ''}}</td>
+                                <td data-title="state">{{row[9] or ''}}</td>
+                                <td data-title="zipcode">{{row[10] or ''}}</td>
+                                <td data-title="email">{{row[15] or ''}}</td>
+                                <td data-title="action"><a href="/update/{{row.1}}" class="btn btn-dark"
+                                        data-bs-toggle="modal" data-bs-target="#modaledit{{row.1}}">Edit</a>
 
-                                <a href="/cpassword/{{row.11}}" data-bs-target="#modalcpassword{{row.11}}"
-                                    data-bs-toggle="modal">
-                                    <i class="fas fa-lock p-1" style="color: rgb(137, 191, 216);"></i>
-                                </a>
-                            </td>
-                        </tr>
-                       
-            
-                        <div class="modal fade" id="modalcpassword{{row.11}}" tabindex="-1"
-                            aria-labelledby="exampleModalLabel" role="dialog">
-                            <div class="modal-dialog">
-                                <div class="modal-content modal-width">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Update Your Password</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
+                                    <a href="{{url_for('delete', user_id= row[1] )}}" class="btndelete">
+                                        <i class="fas fa-trash p-1" style="color: rgb(243, 16, 65);"></i> </a>
 
-                                    <div class="modal-body">
-                                        <form action="{{url_for('cpassword')}}"   method="post">
+                                    <a href="/cpassword/{{row.11}}" data-bs-target="#modalcpassword{{row.11}}"
+                                        data-bs-toggle="modal">
+                                        <i class="fas fa-lock p-1" style="color: rgb(137, 191, 216);"></i>
+                                    </a>
+                                </td>
+                            </tr>
 
 
-                                            <input type="hidden" name="id" value="{{row.11  or ''}}">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>New password:</label>
-                                                        <input type="password" name="password" required class="form-control"
-                                                            id="npassword">
-                                                    </div>
+                            <div class="modal fade" id="modalcpassword{{row.11}}" tabindex="-1"
+                                aria-labelledby="exampleModalLabel" role="dialog">
+                                <div class="modal-dialog">
+                                    <div class="modal-content modal-width">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Update Your
+                                                Password</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
 
-                                                    <div class="form-group">
-                                                        <label>Re-Enter Password:</label>
-                                                        <input type="password" name="cpassword" required
-                                                            class="form-control" id="conpassword">
-                                                    </div>
-                                                        <button onclick="confirmpassword()" class="btn btn-primary" type="button">Update</button>
+                                        <div class="modal-body">
+                                            <form action="{{url_for('cpassword')}}" method="post">
+
+
+                                                <input type="hidden" name="id" value="{{row.11  or ''}}">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>New password:</label>
+                                                            <input type="password" name="password" required
+                                                                class="form-control" id="npassword">
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label>Re-Enter Password:</label>
+                                                            <input type="password" name="cpassword" required
+                                                                class="form-control" id="conpassword">
+                                                        </div>
+                                                        <button onclick="confirmpassword()" class="btn btn-primary"
+                                                            type="button">Update</button>
                                                         <p id="pwderror" class="error "></p>
                                                     </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="submit" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Close</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
 
 
@@ -117,178 +148,246 @@
 
 
 
-                        <div class="modal fade" id="modaledit{{row.1}}" tabindex="-1"
-                            aria-labelledby="exampleModalLabel" role="dialog">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Update Your Details</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
+                            <div class="modal fade" id="modaledit{{row.1}}" tabindex="-1"
+                                aria-labelledby="exampleModalLabel" role="dialog">
+                                <div class="modal-dialog ">
+                                    <div class="modal-content modal-width">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Update Your
+                                                Details</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
 
-                                    <div class="modal-body">
-                                        <form onsubmit="return !!(editvalidate() & datevalidation())" action="{{url_for('edit')}}" method="post" id="formedit">
-                                            <input type="hidden" name="id" value="{{row.0  or ''}}">
-
-                                            <input type="hidden" name="user_id" value="{{row.1  or ''}}">
+                                        <div class="modal-body">
                                             <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>First Name:</label>
-                                                        <input type="text" name="first_name"
-                                                            class="form-control" id="firstname" placeholder="First_name" required                                                            id="firstname" value="{{row.2  or ''}}">
-                                                            <p id="fname"></p>
-                                                    </div>
+                                                <div class="col">
 
-                                                    <div class="form-group">
-                                                        <label>Last Name:</label>
-                                                        <input type="text" name="last_name" required
-                                                            class="form-control" placeholder="Last_name" id="lastname"
-                                                            value="{{row.3  or ''}}">
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label>Email:</label>
-
-                                                        <input type="text" name="email" class="form-control" required
-                                                            id="Email" value="{{row.15  or ''}}"
-                                                            readonly>
-                                                    </div>
-
-
-                                                    <div class="form-group">
-                                                        <label>Date Of Birth:</label>
-                                                        <input   type="date" name="date_of_birth" required
-                                                            class="form-control" id="dob" placeholder="Date of birth"
-                                                            value="{{row.4  or ''}}">
-                                                            <p id="date" class="error"></p>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label>Mobile Number:</label>
-                                                        <input type="tel" name="mobile_no" required
-                                                            class="form-control" placeholder="Mobile" id="mobile"
-                                                            value="{{row.5  or ''}}">
-                                                    </div>
-
-                                                     <div class="form-group">
-                                                        <label>Username:</label>
-                                                        <input type="tel" readonly required
-                                                            class="form-control" 
-                                                            value="{{row.15  or ''}}">
-                                                    </div>
-
+                                                    {% if row.12 !=None %}
+                                                    <a
+                                                        href="{{url_for('static',filename='picture/' + row.12 or '' )}} "><img
+                                                            class="rounded-circle mt-1 ml-5"
+                                                            src="{{url_for ('static' ,filename='picture/' + row.12 )}}"
+                                                            height="120px" width="120px"></a>
+                                                    {% else %}
+                                                    <img class="rounded-circle mt-1 ml-5"
+                                                        src="{{url_for ('static',filename='picture/default-profile-icon.jpg' )}}"
+                                                        height="120px" width="120px">
+                                                    {% endif %}
                                                 </div>
-                                                <div class="col-md-6">
 
-                                                    <div class="form-group">
-                                                        <label class="mt-3">Gender:</label>
-                                                        <input type="radio" name="gender" value="Female" required id="female" class="ml-1 mx-2">Female
+                                                <div class="col mt-5 ml-5 uname">
 
-                                                        <input type="radio" name="gender" value="Male" required class="ml-1 mx-2" id="male">Male
-                                                        <span id="select" hidden>{{ row[6] or ''}}</span> 
-                                                    </div>
+                                                    <strong>User Name:</strong>
 
-                                                    <div class="form-group">
-                                                        <label>Address:</label>
-                                                        <input type="address" name="address" required
-                                                            class="form-control" placeholder="Address" id="address"
-                                                            value="{{row.7  or ''}}">
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label>City:</label>
-                                                        <input type="text" name="city"  class="form-control" required
-                                                            placeholder="City" id="city" value="{{row.8  or ''}}">
-                                                    </div>
+                                                    <span style="color: blue; font-size: medium;">
+                                                        {{row.16  or ''}}</span>
+                                                </div>
 
 
 
-                                                    <div class="form-group">
-                                                        <label>State:</label>
-                                                        <select id=state name="state" id="state" required
-                                                            class="form-control" placeholder="State">
-                                                            <option value="{{row.9 or '' }}" selected>{{row.9 or '' }}</option>
-                                                            <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
-                                                            <option value="Andhra Pradesh">Andhra Pradesh</option>
-                                                            <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-                                                            <option value="Assam">Assam</option>
-                                                            <option value="Bihar">Bihar</option>
-                                                            <option value="Chandigarh">Chandigarh</option>
-                                                            <option value="Chhattisgarh">Chhattisgarh</option>
-                                                            <option value="Dadra and Nagar Haveli">Dadra and Nagar Haveli</option>
-                                                            <option value="Daman and Diu">Daman and Diu</option>
-                                                            <option value="Delhi">Delhi</option>
-                                                            <option value="Goa">Goa</option>
-                                                            <option value="Gujarat" >Gujarat</option>
-                                                            <option value="Haryana">Haryana</option>
-                                                            <option value="Himachal Pradesh">Himachal Pradesh</option>
-                                                            <option value="Jammu and Kashmir">Jammu and Kashmir</option>
-                                                            <option value="Jharkhand">Jharkhand</option>
-                                                            <option value="Karnataka">Karnataka</option>
-                                                            <option value="Kerala">Kerala</option>
-                                                            <option value="Ladakh">Ladakh</option>
-                                                            <option value="Lakshadweep">Lakshadweep</option>
-                                                            <option value="Madhya Pradesh">Madhya Pradesh</option>
-                                                            <option value="Maharashtra">Maharashtra</option>
-                                                            <option value="Manipur">Manipur</option>
-                                                            <option value="Meghalaya">Meghalaya</option>
-                                                            <option value="Mizoram">Mizoram</option>
-                                                            <option value="Nagaland">Nagaland</option>
-                                                            <option value="Odisha">Odisha</option>
-                                                            <option value="Puducherry">Puducherry</option>
-                                                            <option value="Punjab">Punjab</option>
-                                                            <option value="Rajasthan">Rajasthan</option>
-                                                            <option value="Sikkim">Sikkim</option>
-                                                            <option value="Tamil Nadu">Tamil Nadu</option>
-                                                            <option value="Telangana">Telangana</option>
-                                                            <option value="Tripura">Tripura</option>
-                                                            <option value="Uttar Pradeshvv">Uttar Pradesh</option>
-                                                            <option value="Uttarakhand">Uttarakhand</option>
-                                                            <option value="West Bengal">West Bengal</option>
-                                                        </select>
-                                                    </div>
+                                                <div class="col mt-5 ml-5 em">
 
-
-                                                    <div class="form-group">
-                                                        <label>Zipcode:</label>
-                                                        <input type="text" id="zipcode" name="zipcode" id="zipcode"
-                                                            class="form-control" placeholder="Zipcode" required
-                                                            value="{{row.10  or ''}}">
-                                                    </div>
-
-                                                     <div class="form-group">
-                                                        <label>Last Update:</label>
-                                                        <input   type="text" name="date_update" readonly
-                                                            class="form-control" id="dob" 
-                                                            value="{{row.11  or ''}}">
-                                                            
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <button  class="btn btn-primary"
-                                                            type="submit">Update</button>
-                                                    </div>
+                                                    <strong class="em">Email:</strong>
+                                                    <span
+                                                        style="color: blue; font-size: medium;">{{row.15  or ''}}</span>
                                                 </div>
                                             </div>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button  type="submit" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Close</button>
+                                            <form onsubmit="return !!(editvalidate() & datevalidation())"
+                                                action="{{url_for('edit')}}" method="post" id="formedit">
+                                                <input type="hidden" name="id" value="{{row.0  or ''}}">
+
+                                                <input type="hidden" name="user_id" value="{{row.1  or ''}}">
+                                                <div class="row">
+                                                    <div class="col-md-6 mt-5">
+                                                        <div class="form-group">
+                                                            <label>First Name:</label>
+                                                            <input type="text" name="first_name" class="form-control"
+                                                                id="firstname" placeholder="First_name" required
+                                                                id="firstname" value="{{row.2  or ''}}">
+                                                            <p id="fname"></p>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label>Last Name:</label>
+                                                            <input type="text" name="last_name" required
+                                                                class="form-control" placeholder="Last_name"
+                                                                id="lastname" value="{{row.3  or ''}}">
+                                                        </div>
+
+
+
+                                                        <div class="form-group">
+                                                            <label>Date Of Birth:</label>
+                                                            <input type="date" name="date_of_birth" required
+                                                                class="form-control" id="dob"
+                                                                placeholder="Date of birth" value="{{row.4  or ''}}">
+                                                            <p id="date" class="error"></p>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label>Mobile Number:</label>
+                                                            <input type="tel" name="mobile_no" required
+                                                                class="form-control" placeholder="Mobile" id="mobile"
+                                                                value="{{row.5  or ''}}">
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label>Certificate:</label>
+                                                            {% if row[13] !=None %}
+
+                                                            <a href="{{url_for('static',filename='pdf/' + row.13 or '' )}} "
+                                                                download="download">{{ row.13 or ''}}</a>
+                                                            {% else %}
+                                                            <p>** NO Attached Files</p>
+
+                                                            {% endif %}
+
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-6">
+
+                                                        <div class="form-group">
+                                                            <label>Gender:</label>
+                                                            <input type="radio" name="gender" value="Female" id="female"
+                                                                required class=" fe">Female
+                                                            <input type="radio" name="gender" value="Male" required
+                                                                class="me " id="male">Male
+                                                            <span id="select" hidden>{{ row.6 or '' }}</span>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label>Address:</label>
+                                                            <input type="address" name="address" required
+                                                                class="form-control" placeholder="Address" id="address"
+                                                                value="{{row.8  or ''}}">
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label>City:</label>
+                                                            <input type="text" name="city" class="form-control" required
+                                                                placeholder="City" id="city" value="{{row.7  or ''}}">
+                                                        </div>
+
+
+
+                                                        <div class="form-group">
+                                                            <label>State:</label>
+                                                            <select id=state name="state" id="state" required
+                                                                class="form-control" placeholder="State">
+                                                                <option value="{{row.9  or ''}}" selected>
+                                                                    {% if row[9] != None %}
+                                                                    {{ row[9] or '' }}
+                                                                    {% else %}
+                                                                    Select State
+                                                                    {% endif %}</option>
+                                                                <option value="Andaman and Nicobar Islands">
+                                                                    Andaman and
+                                                                    Nicobar Islands</option>
+                                                                <option value="Andhra Pradesh">Andhra
+                                                                    Pradesh</option>
+                                                                <option value="Arunachal Pradesh">
+                                                                    Arunachal Pradesh
+                                                                </option>
+                                                                <option value="Assam">Assam</option>
+                                                                <option value="Bihar">Bihar</option>
+                                                                <option value="Chandigarh">Chandigarh
+                                                                </option>
+                                                                <option value="Chhattisgarh">
+                                                                    Chhattisgarh</option>
+                                                                <option value="Dadra and Nagar Haveli">
+                                                                    Dadra and Nagar
+                                                                    Haveli</option>
+                                                                <option value="Daman and Diu">Daman and
+                                                                    Diu</option>
+                                                                <option value="Delhi">Delhi</option>
+                                                                <option value="Goa">Goa</option>
+                                                                <option value="Gujarat">Gujarat</option>
+                                                                <option value="Haryana">Haryana</option>
+                                                                <option value="Himachal Pradesh">
+                                                                    Himachal Pradesh
+                                                                </option>
+                                                                <option value="Jammu and Kashmir">Jammu
+                                                                    and Kashmir
+                                                                </option>
+                                                                <option value="Jharkhand">Jharkhand
+                                                                </option>
+                                                                <option value="Karnataka">Karnataka
+                                                                </option>
+                                                                <option value="Kerala">Kerala</option>
+                                                                <option value="Ladakh">Ladakh</option>
+                                                                <option value="Lakshadweep">Lakshadweep
+                                                                </option>
+                                                                <option value="Madhya Pradesh">Madhya
+                                                                    Pradesh</option>
+                                                                <option value="Maharashtra">Maharashtra
+                                                                </option>
+                                                                <option value="Manipur">Manipur</option>
+                                                                <option value="Meghalaya">Meghalaya
+                                                                </option>
+                                                                <option value="Mizoram">Mizoram</option>
+                                                                <option value="Nagaland">Nagaland
+                                                                </option>
+                                                                <option value="Odisha">Odisha</option>
+                                                                <option value="Puducherry">Puducherry
+                                                                </option>
+                                                                <option value="Punjab">Punjab</option>
+                                                                <option value="Rajasthan">Rajasthan
+                                                                </option>
+                                                                <option value="Sikkim">Sikkim</option>
+                                                                <option value="Tamil Nadu">Tamil Nadu
+                                                                </option>
+                                                                <option value="Telangana">Telangana
+                                                                </option>
+                                                                <option value="Tripura">Tripura</option>
+                                                                <option value="Uttar Pradeshvv">Uttar
+                                                                    Pradesh</option>
+                                                                <option value="Uttarakhand">Uttarakhand
+                                                                </option>
+                                                                <option value="West Bengal">West Bengal
+                                                                </option>
+                                                            </select>
+                                                        </div>
+
+
+                                                        <div class="form-group">
+                                                            <label>Zipcode:</label>
+                                                            <input type="text" id="zipcode" name="zipcode" id="zipcode"
+                                                                class="form-control" placeholder="Zipcode" required
+                                                                value="{{row.10  or ''}}">
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label>Last Update:</label>
+                                                            <input type="text" name="date_update" readonly
+                                                                class="form-control" id="dob" value="{{row.11  or ''}}">
+
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <button class="btn btn-primary"
+                                                                type="submit">Update</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        {% endfor %}
-                </div>
-                
-               
-                </table>
-            </div>
+                            {% endfor %}
+                    </div>
 
-                <a href="/adminlogout" class="ms-auto">logout</a>
+
+                    </table>
+                </div>
+
+                <a href="/adminlogout" class="mt-1 btn btn-warning"><i class="fas fa-sign-out-alt p-1"></i>Logout</a>
 
 
 
@@ -302,30 +401,32 @@
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form onsubmit="return validation();" action="{{url_for('insert')}}" method="post" id="myform" name="insertform">
+                                <form onsubmit="return validation();" action="{{url_for('insert')}}" method="post"
+                                    id="myform" name="insertform">
                                     <div class="form-group">
                                         <label>Email:</label>
-                                        <input type="text" name="email"  class="form-control " placeholder="Email"
+                                        <input type="text" name="email" class="form-control " placeholder="Email"
                                             id="em">
 
                                     </div>
 
                                     <div class="form-group">
                                         <label>User_Name:</label>
-                                        <input type="text" name="user_name" onkeyup="uservalidation()"  class="form-control" placeholder="User_name"
-                                            id="uname">
+                                        <input type="text" name="user_name" onkeyup="uservalidation()"
+                                            class="form-control" placeholder="User_name" id="uname">
+
 
                                     </div>
                                     <div class="form-group">
                                         <label>Password:</label>
-                                        <input type="password"  name="password" class="form-control"
+                                        <input type="password" name="password" class="form-control"
                                             placeholder="Password" id="pw">
 
                                     </div>
 
                                     <div class="form-group">
-                                        <button  type="submit" class="btn btn-primary"
-                                            value="submit">Add User</button>
+                                        <button type="submit" class="btn btn-primary" value="submit">Add
+                                            User</button>
                                     </div>
                                     <p id="errormsg"></p>
                                 </form>
@@ -347,10 +448,9 @@
 </div>
 <script>
     $(document).ready(function () {
-         $('#empTable').DataTable();
+        $('#empTable').DataTable();
     });
-
-    </script>
+</script>
 
 
 {% endblock %}
