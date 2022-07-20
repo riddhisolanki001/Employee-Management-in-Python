@@ -1,0 +1,326 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<main>
+    <section class="glass">
+        <div class="deshboard">
+            <div class="user">
+
+                {% if value[16] !=None %}
+                <img class="rounded-circle" src="{{url_for ('static' ,filename='picture/' + value[16] )}}" height="128%"
+                    width="128%">
+
+                {% else %}
+                <img src="{{url_for ('static',filename='picture/1053244.png' )}}">
+                {% endif %}
+                <h2 class="mb-5">{{value[6] or '' }} {{value[7] or '' }}</h2>
+            </div>
+
+        </div>
+
+
+        <div class="detail">
+            <div class="top mb-5 p-2 ml-5">
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    <h3>Welcome!</h3>
+                    <h4>{{value [2]}}</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+
+        </div>
+        </div>
+
+
+        <div class="information">
+            <div class="row">
+
+                <div class="col">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <h5 class="heading">Email:</h5>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="details">
+                                {{value[1] or ''  }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <h5 class="heading">Date Of Birth:</h5>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="details">
+                                {{value[8] or '' }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <h5 class="heading">Mobile No:</h5>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="details">
+                                {{value[9] or '' }}
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <h5 class="heading">Gender:</h5>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="details">
+                                <input type="radio" name="gender" value="female" id="female" class="ml-1 mx-2">female
+                                <input type="radio" name="gender" value="male" required class="ml-1 mx-2" id="male">male
+                                <span id="select" hidden>{{ value[10] or '' }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <h5 class="heading">Certificate:</h5>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="details">
+                                {% if value[17] !=None %}
+
+                                <a
+                                    href="{{url_for('static',filename='pdf/' + value[17] or '' )}} ">{{ value[17] or ''}}</a>
+                                {% else %}
+                                <p>**Choose file</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col mr-5">
+                    <div class="row ml-5">
+                        <div class="col-lg-4">
+                            <h5 class="heading">State:</h5>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="details">
+                                {{value[13] or ''}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <h5 class="heading">Zipcode:</h5>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="details">
+                                {{value[14] or ''}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <h5 class="heading">Address:</h5>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="details">
+
+                                {{value[11] or '' }} {{value[12] or ''  }}
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <h5 class="heading">Update Date:</h5>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="details">
+
+                                {{value[15] or '' }}
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+                    <div class="row">
+                        <div class="button p-3">
+
+                            <a href="{{url_for('edit_user', user_id=value[5])}}" class="btn btn1">Edit</a>
+                            <a href="/userlogout" class="btn btn1">logout</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+            <div class="modal fade" id="modaledit{{value.0}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Update Your Details</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <form onsubmit="return !!(editvalidate() & dobvalidation() & allowed() )"
+                                action="{{ url_for('edituser') }}" method="post" enctype="multipart/form-data">
+                                <input type="hidden" name="id" value="{{value.0}}">
+
+                                <input type="hidden" name="user_id" value="{{value.5 }}">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>First Name:</label>
+
+                                            <input type="text" name="first_name" required class="form-control"
+                                                placeholder="First Name" id="firstname" value="{{value.6 or '' }}">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Last Name:</label>
+                                            <input type="text" name="last_name" required class="form-control"
+                                                placeholder="Last_name" id="lastname" value="{{value.7 or '' }}">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Email:</label>
+
+                                            <input type="text" name="email" required class="form-control"
+                                                placeholder="Email" id="email" value="{{value.1 or '' }}" readonly>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label>Birth Date:</label>
+                                            <input type="date" name="date_of_birth" required class="form-control"
+                                                id="dob" placeholder="date of birth" value="{{value.8 or '' }}">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Mobile Number:</label>
+                                            <input type="text" name="mobile_no" required class="form-control"
+                                                placeholder="mobile" id="mobile" value="{{value.9 or '' }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label>Gender:</label>
+                                            <input type="radio" name="editgender" value="female" id="editfemale"
+                                                required class="ml-1 mx-2">Female
+                                            <input type="radio" name="editgender" value="male" required
+                                                class="ml-1 mx-2" id="editmale">Male
+                                            <span id="editselect" hidden>{{ value[10]}}</span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Address:</label>
+                                            <input type="address" name="address" required class="form-control"
+                                                placeholder="address" id="address" value="{{value.12 or '' }}">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>City:</label>
+                                            <input type="text" name="city" required class="form-control"
+                                                placeholder="city" id="city" value="{{value.11 or ''}}">
+                                        </div>
+
+
+
+                                        <div class="form-group">
+                                            <label>State:</label>
+                                            <select id=state name="state" id="state" required class="form-control"
+                                                placeholder="State">
+                                                <option value="{{value.13  }}" selected>{{value.13  }}</option>
+                                                <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands
+                                                </option>
+                                                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                                <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                                <option value="Assam">Assam</option>
+                                                <option value="Bihar">Bihar</option>
+                                                <option value="Chandigarh">Chandigarh</option>
+                                                <option value="Chhattisgarh">Chhattisgarh</option>
+                                                <option value="Dadra and Nagar Haveli">Dadra and Nagar Haveli</option>
+                                                <option value="Daman and Diu">Daman and Diu</option>
+                                                <option value="Delhi">Delhi</option>
+                                                <option value="Goa">Goa</option>
+                                                <option value="Gujarat">Gujarat</option>
+                                                <option value="Haryana">Haryana</option>
+                                                <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                                <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                                                <option value="Jharkhand">Jharkhand</option>
+                                                <option value="Karnataka">Karnataka</option>
+                                                <option value="Kerala">Kerala</option>
+                                                <option value="Ladakh">Ladakh</option>
+                                                <option value="Lakshadweep">Lakshadweep</option>
+                                                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                                <option value="Maharashtra">Maharashtra</option>
+                                                <option value="Manipur">Manipur</option>
+                                                <option value="Meghalaya">Meghalaya</option>
+                                                <option value="Mizoram">Mizoram</option>
+                                                <option value="Nagaland">Nagaland</option>
+                                                <option value="Odisha">Odisha</option>
+                                                <option value="Puducherry">Puducherry</option>
+                                                <option value="Punjab">Punjab</option>
+                                                <option value="Rajasthan">Rajasthan</option>
+                                                <option value="Sikkim">Sikkim</option>
+                                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                                <option value="Telangana">Telangana</option>
+                                                <option value="Tripura">Tripura</option>
+                                                <option value="Uttar Pradeshvv">Uttar Pradesh</option>
+                                                <option value="Uttarakhand">Uttarakhand</option>
+                                                <option value="West Bengal">West Bengal</option>
+                                            </select>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label>Zipcode:</label>
+                                            <input type="text" id="zipcode" required name="zipcode" class="form-control"
+                                                placeholder="Zipcode" value="{{value.14 or '' }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Profile Pic</label>
+                                            <input type="file" id="profile-pic" onkeyup="allowed()" required
+                                                name="files[]" class="form-control">
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <button class="btn btn-primary" type="submit">Update</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+
+
+    {% endblock %}

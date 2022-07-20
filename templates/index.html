@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+
+
+{% block title %} Flask {% endblock %}
+
+{% block body %}
+
+<img class="wave" src="../static/Background.png">
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-10 ">
+            <div class="img ">
+                <img class="img-mobile" src="../static/undraw_mobile_login_re_9ntv.svg">
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-10 col-10 ">
+            <div class="title mt-5">Login Here</div>
+            <div class="login-container ">
+                <form onsubmit=" return validate();" class="form-container mt-5 " id="form" method="post" action="{{url_for('login')}}">
+                     <img class="avtar1" src="../static/IPNp.gif">
+                        <div class="form-group">
+                            <i class="fas fa-user p-1" style="color: rgb(81, 155, 216);"></i>
+                            <label class="mb-3 me-auto">Email</label>
+                            <input type="Text" name="email" class="form-control" id="email" placeholder="Enter Your Email">
+
+                        </div>
+                        <div class="form-group">
+                            <span class="eye" onclick="return pwdvisible()">
+                            <i id="hide1"  class="fa fa-eye" style="color: rgb(81, 155, 216); display: none;"></i>
+                            <i id="hide2" class="fa fa-eye-slash" style="color: rgb(81, 155, 216);"></i>
+                            </span>
+                            <label class="mb-3">Password</label>
+                            <input type="password" name="password"  class="form-control" id="password" placeholder="Enter Your Password">
+                          
+                            
+                            
+                        </div>
+                         <p class="error" id="errormsg"></p>
+
+
+                        <button type="submit" id="btn"
+                         class="btn btn-block mt-4 mb-4 text-uppercase btn-primary" value="submit">Submit</button>
+
+                        {% if error %}
+
+                         <p id="error">{{error}}</p>
+                        {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

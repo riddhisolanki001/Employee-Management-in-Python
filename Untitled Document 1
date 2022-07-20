@@ -1,0 +1,161 @@
+
+from flask import Flask, render_template ,request ,session,redirect,url_for
+import mysql.connector
+
+from flask_mysqldb import MySQL
+
+
+# conn=mysql.connector.connect(host='localhost',port='3306',database='mydb_1', user='root',password='')
+# cursor=conn.cursor()
+app = Flask(__name__)
+app.secret_key="super secret key"
+
+
+app.config['MYSQL_HOST']= 'localhost'
+app.config['MYSQL_USER']= 'root'
+app.config['MYSQL_PASSWORD']= ''
+app.config['MYSQL_DB']= 'mydb_1'
+
+mysql=MySQL(app)
+
+
+
+# @app.route('/')
+# def index():
+#     return render_template("index.html")
+
+# @app.route('/adminpanel')
+# def adminpanel():
+#     return render_template('adminpanel.html',email=session['email'])
+
+# @app.route("/login", methods=["GET","POST"])
+# def login():
+#     email = request.form.get('email')
+#     password = request.form.get('password')
+
+#     cursor.execute("SELECT * FROM admin_login WHERE 'email' LIKE '{}' AND 'password' LIKE '{}'".format(email,password))
+#     users=cursor.fetchall()
+#     return "users"
+
+
+
+    # msg=""
+    # if request.method == 'POST':
+    #     email = request.form['email']
+    #     password = request.form['password']
+    #     cur=mysql.connection.cursor()
+    #     cur.execute("SELECT * FROM admin_login WHERE email = %s AND password = %s",(email,password))
+    #     mysql.connection.commit()
+    #     cur.close()
+    #     result = cur.fetchone()
+   
+    #     if result:
+    #         session['loggedin']=True
+    #         session['email']=record[1]
+    #         return redirect(url_for('adminpanel'))
+    #     else:
+    #         msg="Incorrect"
+    # return render_template('index.html',msg=msg)            
+
+
+           
+            
+
+
+
+
+@app.route('/',methods=['GET','POST'])
+def index():
+    if request.method == 'POST':
+        userDetails=request.form
+        email=userDetails['email']
+        password=userDetails['password']
+        cur=mysql.connection.cursor()
+        cur.execute("INSERT INTO user_login (email,password) VALUES(%s,%s)",(email,password))
+        mysql.connection.commit()
+        cur.close()
+        return redirect('/users')
+    
+    return render_template('index.html')
+
+    
+
+
+@app.route('/users')
+def users():
+    cur=mysql.connection.cursor()
+    resultvalue=cur.execute("select * from user_login")
+    if resultvalue > 0:
+        userDetails=cur.fetchall()
+        return render_template('users.html',userDetails=userDetails)
+
+# @app.route('/login',)
+# def login():
+#     msg='hghhghgh'
+    
+#         email=request.form['email']
+#         password=request.form['password']
+#         cursor.execute('select * from user_login')
+#         if record:
+#             session['loggedin']=True
+#             session['email']=record[1]
+#             return redirect(url_for('home.html'))
+#         else:
+#             msg='error'
+#         return render_template('index.html',msg=msg)
+
+if __name__=="_main_":
+    app.run(host='0.0.0.0', port=4000, debug=True)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <img class="img" src="../static/wave.png">
+<div class="container">
+    <div class="img">
+        <img src="../static/bg.svg">
+    </div>
+
+    <div class="login-container">
+        <form class="form-container mt-5" method="post" action="http://127.0.0.1:5000/login">
+            <img src="../static/avatar.svg">
+            <h2>Welcome</h2>
+            <div class="form-group">
+                <i class="fas fa-user"></i>
+                <label class="mb-3">Email</label>
+                <input type="Text" name="password" class="form-control" id="exampleInputPassword1" placeholder="Email">
+            </div>
+
+            <div class="form-group">
+                <i class="fas fa-lock"></i>
+                <label class="mb-3">Password</label>
+                <input type="password" name="password" class="form-control" id="exampleInputPassword1"
+                    placeholder="Password">
+            </div>
+            
+             <input type="submit" class="btn btn-block mt-4 mb-4 text-uppercase btn-warning">
+        </form>
+
+    </div>
+</div>
+  
