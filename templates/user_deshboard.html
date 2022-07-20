@@ -6,12 +6,23 @@
         <div class="deshboard">
             <div class="user">
 
+                {% for message in get_flashed_messages() %}
+
+                <!-- {{ message }} -->
+                <script type="text/javascript">
+                    swal("Good job!", "You Login Successfully", "success");
+                </script>
+
+
+                {% endfor %}
+
                 {% if value[16] !=None %}
-                <img class="rounded-circle" src="{{url_for ('static' ,filename='picture/' + value[16] )}}" height="128%"
-                    width="128%">
+                <a href="{{url_for('static',filename='picture/' + value[16] or '' )}} "><img class="rounded-circle mt-1"
+                        src="{{url_for ('static' ,filename='picture/' + value[16] )}}" height="128" width="128"></a>
 
                 {% else %}
-                <img src="{{url_for ('static',filename='picture/1053244.png' )}}">
+                <img class=" rounded-circle mt-1" src="{{url_for ('static',filename='picture/avatar.svg' )}}"
+                    height="128" width="128">
                 {% endif %}
                 <h2 class="mb-5">{{value[6] or '' }} {{value[7] or '' }}</h2>
             </div>
@@ -91,10 +102,10 @@
                             <div class="details">
                                 {% if value[17] !=None %}
 
-                                <a
-                                    href="{{url_for('static',filename='pdf/' + value[17] or '' )}} ">{{ value[17] or ''}}</a>
+                                <a href="{{url_for('static',filename='pdf/' + value[17] or '' )}} "
+                                    download="download">{{ value[17] or ''}}</a>
                                 {% else %}
-                                <p>**Choose file</p>
+                                <p>**No Attached Files</p>
                                 {% endif %}
                             </div>
                         </div>
@@ -109,7 +120,7 @@
                         </div>
                         <div class="col-lg-4">
                             <div class="details">
-                                {{value[13] or ''}}
+                                {{ value[13] or ''}}
                             </div>
                         </div>
                     </div>
@@ -159,7 +170,7 @@
                         <div class="button p-3">
 
                             <a href="{{url_for('edit_user', user_id=value[5])}}" class="btn btn1">Edit</a>
-                            <a href="/userlogout" class="btn btn1">logout</a>
+                            <a href="/userlogout" class="btn btn1">Logout</a>
                         </div>
                     </div>
                 </div>

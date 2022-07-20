@@ -19,7 +19,7 @@ function validation() {
         alert("Password length must be 6 characters");
         return false;
     } else {
-        alert("user Added Sucessfully")
+
         return true;
 
     }
@@ -136,7 +136,6 @@ function confirmpassword() {
 
     }
     if (newpassword == confirmpwd) {
-
         alert("Password Updated Sucessfully!");
         return true;
     } else {
@@ -245,7 +244,8 @@ if (checked == "Male") {
     female.click()
 } else {}
 
-
+var selectstate = document.getElementById('selectstate').value
+console.log(selectstate)
 
 function allow() {
 
@@ -262,6 +262,10 @@ function allow() {
         }
     }
 }
+
+
+
+
 
 
 

@@ -232,7 +232,7 @@ body {
 
 @media(max-width:1024px) {
     .login-container {
-        margin-left: 200px;
+        margin-left: 190px;
 
     }
 
@@ -271,7 +271,7 @@ body {
 
 @media(max-width:426px) {
     .form-container {
-        margin-left: -125px;
+        margin-left: -165px;
     }
 
     .img img {
@@ -491,6 +491,16 @@ main {
 
     }
 
-    .edit {}
+
+
+}
+
+.btn-warning {
+    background: linear-gradient(to right top, #9e2929, #b68181);
+    border: none;
+}
+
+.fa-sign-out-alt {
+    color: linear-gradient(to right top, #9e2929, #ecedee);
 
 }
