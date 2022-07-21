@@ -172,16 +172,6 @@ function editvalidate() {
     let address = document.getElementById("address").value;
     let zipcode = document.getElementById("zipcode").value;
     let city = document.getElementById("city").value;
-
-    // var phone = /^[6789]\d{9}$/;
-    // if(phone.test(mobile))
-    // {
-    //  document.getElementById("mobile").innerHTML = "";
-    //  return true;
-    // }
-
-
-
     if (mobile.length < 10 || mobile.length > 10) {
         alert("mobile must be 10 digit");
         return false;
@@ -230,11 +220,6 @@ function editvalidate() {
     }
 }
 
-
-
-
-
-
 var male = document.getElementById("male");
 var female = document.getElementById("female");
 var checked = document.getElementById("select").innerHTML;
@@ -256,130 +241,3 @@ function allow() {
         return true;
     }
 }
-
-
-
-
-
-
-
-
-
-
-// form.addEventListener('click', (e) => {
-//     e.preventDefault()
-
-
-
-// var today= new Date();
-// var validMinDate=new Date(
-//     today.getFullYear()-18,
-//     today.getMonth(),
-//     today.getDate(),
-//     today.getHours(),
-//     today.getMinutes());
-
-// let dob = document.getElementById('dob').value;
-
-
-
-
-
-
-// }if(!isNaN(last_name)){
-//     alert("name should be in character");
-//     return false;
-
-// }if(!isNaN(mobile)){
-//     alert("mobile can be in character");
-//     return false;
-
-// }if(mobile.length<10){
-//     alert("mobile must be 10 digit")
-//     return false
-
-// }if(mobile.length>10){
-//     alert("mobile must be 10 digit")
-//     return false
-
-// }if(dob>validMinDate){
-//     alert("age must be greater then 18")
-//     return false
-
-// }if(zipcode.length<6){
-//     alert ("please enter valid zipcode")
-//     return false;
-// }if(!isNaN(address)){
-//     alert("address must be in character")
-//     return false;
-
-
-
-
-
-
-
-
-// const isEmail = (email) => {
-//     var atSymbol = email.indexOf("@");
-//     if (atSymbol < 1) return false;
-//     var dot = email.indexOf('.');
-//     if (dot <= atSymbol + 3) return false;
-//     if (dot === email.length - 1) return false;
-//     return true;
-// }
-// //validate function
-
-// const validate = () => {
-
-//     const email = email.value.trim();
-//     const password = password.value.trim();
-
-//     //validate email
-//     if (email === "") {
-//         setErrorMsg(email, 'email can not be blank');
-//     } else if (!isEmail(email)) {
-//         setErrorMsg(email, 'email is not valid');
-//     } else {
-//         setSuccessMsg(email);
-//     }
-
-
-
-// }
-
-// function setErrorMsg(input, errormsg) {
-//     const formGroup = input.parentElement;
-//     const small = formGroup.querySelector('small');
-//     formControl.className = "form-group error";
-//     small.innerText = errormsg;
-
-
-
-// }
-
-// function validate() {
-//     var pass = document.getElementById("password").value;
-//     //check empty password field
-//     if (pass == "") {
-//         document.getElementById("message").innerHTML = "Fill the password Field!";
-//         return false;
-//     }
-
-//     //minimum password length validation
-//     if (pass.length < 6) {
-//         document.getElementById("message").innerHTML = "Password length must be 6 characters";
-//         return false;
-//     }
-
-//     //maximum length of password validation
-//     if (pass.length > 6) {
-//         document.getElementById("message").innerHTML = "Password length must be 6 characters";
-//         return false;
-//     }
-// var a = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$/;
-//   if(a.test(email))
-//   {
-//     document.getElementById("chemail").innerHTML = "";
-//      return true;
-//   }
