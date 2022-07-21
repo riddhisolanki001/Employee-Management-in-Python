@@ -149,10 +149,10 @@ def insert():
     chkuname = cur.fetchone()
     chkemail=cur.fetchone()
     if chkuname:
-        flash('already exists','error')
+        flash('Already exists','error')
         return redirect(url_for("users"))
     if chkemail:
-        flash('already exists','error')
+        flash('Already exists','error')
         return redirect(url_for("users"))
     cur.execute(
     f"""INSERT INTO user_login (email,user_name,password) VALUES('{email}','{user_name}','{hash_pwd}')""")
