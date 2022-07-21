@@ -499,6 +499,10 @@ main {
     font-size: large;
 }
 
+.swal-button {
+    background-color: blue;
+}
+
 .btn-warning {
     background: linear-gradient(to right top, #9e2929, #b68181);
     border: none;
