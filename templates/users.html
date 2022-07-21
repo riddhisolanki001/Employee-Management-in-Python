@@ -86,7 +86,9 @@
                                         data-bs-toggle="modal" data-bs-target="#modaledit{{row.1}}">Edit</a>
 
                                     <a href="{{url_for('delete', user_id= row[1] )}}" class="btndelete">
-                                        <i class="fas fa-trash p-1" style="color: rgb(243, 16, 65);"></i> </a>
+                                        <i class="fas fa-trash p-1"
+                                            onclick="return confirm('Are You Sure Want To Delete')"
+                                            style="color: rgb(243, 16, 65);"></i> </a>
 
                                     <a href="/cpassword/{{row.11}}" data-bs-target="#modalcpassword{{row.11}}"
                                         data-bs-toggle="modal">
