@@ -248,20 +248,15 @@ var selectstate = document.getElementById('selectstate').value
 console.log(selectstate)
 
 function allow() {
-
-    {
-        var fup = document.getElementById('pdfname');
-        var fileName = fup.value;
-        var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
-
-        if (ext == "pdf" || ext == "PDF") {
-            return true;
-        } else {
-            alert("Upload Pdf Images only");
-            return false;
-        }
+    var fileInput = document.getElementById("pdfname");
+    if (fileInput.files[0].size >= 20971520) {
+        document.getElementById("date").innerHTML = "File size should be less than or Equal to 20 MB";
+        return false;
+    } else {
+        return true;
     }
 }
+
 
 
 
