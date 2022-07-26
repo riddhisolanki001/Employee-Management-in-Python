@@ -86,7 +86,7 @@
                                 <option value="value[13]" selected>{% if value[13] != None %}
                                     {{value[13] or '' }}</a>
                                     {% else %}
-                                    >>Select State
+                                    Select State
                                     {% endif %}</option>
                                 <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
                                 <option value="Andhra Pradesh">Andhra Pradesh</option>
@@ -144,7 +144,7 @@
                             <label>Certificates</label>
                             <input type="file" id="pdfname" accept="application/pdf, application/vnd.ms-excel"
                                 onkeyup="allow()" name="pdf[]" required class="form-control">
-
+                            <p id="errorname"> </p>
 
 
                             <div class="button">
